@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report an Item | Campus Finder</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <h2>🎒 Campus Finder</h2>
+        <div>
+            <a href="/">Home</a>
+            <a href="/#features">Features</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="card">
+            <h2 class="section-title">Report a Lost or Found Item</h2>
+
+            <form action="/report" method="POST">
+                <label for="item_type">Report type</label>
+                <select id="item_type" name="item_type" required>
+                    <option value="Lost"
+                        {% if selected_type == 'Lost' %}selected{% endif %}>
+                        I lost an item
+                    </option>
+                    <option value="Found"
+                        {% if selected_type == 'Found' %}selected{% endif %}>
+                        I found an item
+                    </option>
+                </select>
+
+                <label for="item_name">Item name</label>
+                <input id="item_name" type="text" name="item_name"
+                       placeholder="e.g. Blue water bottle" maxlength="100"
+                       required>
+
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="">Choose a category</option>
+                    <option>ID Card</option>
+                    <option>Books and Notes</option>
+                    <option>Electronics</option>
+                    <option>Bags</option>
+                    <option>Keys</option>
+                    <option>Water Bottles</option>
+                    <option>Other</option>
+                </select>
+
+                <label for="location">Location</label>
+                <input id="location" type="text" name="location"
+                       placeholder="e.g. College library" maxlength="150"
+                       required>
+
+                <label for="description">Description</label>
+                <textarea id="description" name="description"
+                          placeholder="Describe the item and when it was lost or found"
+                          maxlength="1000" rows="4" required></textarea>
+
+                <label for="contact">Contact details</label>
+                <input id="contact" type="text" name="contact"
+                       placeholder="College email or contact information"
+                       maxlength="150" required>
+
+                <button type="submit">Submit Report</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>Campus Lost Item Finder | College Mini Project</p>
+    </footer>
+
+</body>
+</html>

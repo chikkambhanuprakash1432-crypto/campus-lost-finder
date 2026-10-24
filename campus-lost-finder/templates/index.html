@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Campus Lost Item Finder</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>🎒 Campus Finder</h2>
+
+        <div>
+            <a href="/">Home</a>
+            <a href="#features">Features</a>
+            <a href="#contact">About</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Lost Something on Campus?</h1>
+
+        <p>
+            Don't worry! Find your lost belongings or help
+            someone recover their missing items.
+        </p>
+
+      
+<form class="search-box" action="/" method="GET">
+    <input
+        type="text"
+        name="q"
+        placeholder="Search items or locations..."
+        value="{{ search_query }}"
+    >
+
+    <select name="category">
+        <option value="">All Categories</option>
+        <option value="ID Card"
+            {% if selected_category == 'ID Card' %}selected{% endif %}>
+            ID Card
+        </option>
+        <option value="Books and Notes"
+            {% if selected_category == 'Books and Notes' %}selected{% endif %}>
+            Books and Notes
+        </option>
+        <option value="Electronics"
+            {% if selected_category == 'Electronics' %}selected{% endif %}>
+            Electronics
+        </option>
+        <option value="Bags"
+            {% if selected_category == 'Bags' %}selected{% endif %}>
+            Bags
+        </option>
+        <option value="Keys"
+            {% if selected_category == 'Keys' %}selected{% endif %}>
+            Keys
+        </option>
+        <option value="Water Bottles"
+            {% if selected_category == 'Water Bottles' %}selected{% endif %}>
+            Water Bottles
+        </option>
+        <option value="Other"
+            {% if selected_category == 'Other' %}selected{% endif %}>
+            Other
+        </option>
+    </select>
+
+    <button type="submit">Search</button>
+</form>
+
+    </section>
+
+    <main class="container" id="features">
+      
+<section class="stats">
+    <div class="stat-card">
+        <h3>{{ stats['total'] or 0 }}</h3>
+        <p>Total Reports</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>{{ stats['lost'] or 0 }}</h3>
+        <p>Lost Items</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>{{ stats['found'] or 0 }}</h3>
+        <p>Found Items</p>
+    </div>
+</section>
+
+        <h2 class="section-title">Explore Our Portal</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="emoji">🔍</div>
+                <h3>Report Lost Item</h3>
+                <p>
+                    Tell us about an item you lost on campus
+                    so others can help you find it.
+                </p>
+                <a class="btn" href="/report?type=Lost">Report Lost Item</a>
+            </div>
+
+            <div class="card">
+                <div class="emoji">🤝</div>
+                <h3>Report Found Item</h3>
+                <p>
+                    Found something that belongs to someone?
+                    Share the details to help return it.
+                </p>
+                <a class="btn" href="/report?type=Found">Report Found Item</a>
+            </div>
+
+            <div class="card">
+                <div class="emoji">📋</div>
+                <h3>Browse Items</h3>
+                <p>
+                    Explore lost and found belongings
+                    reported by students.
+                </p>
+                <a class="btn" href="#reports">Browse Items</a>
+            </div>
+
+        </div>
+    </main>
+    
+<section id="reports" style="margin-top: 40px;">
+    <h2 class="section-title">Recent Lost and Found Reports</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <p style="padding: 12px; margin-bottom: 15px;
+                      background: #e4efff; border-radius: 7px;">
+                {{ message }}
+            </p>
+        {% endfor %}
+    {% endwith %}
+
+    {% if items %}
+        
+{% for item in items %}
+<div class="card">
+
+    <span class="badge
+        {% if item['item_type'] == 'Lost' %}
+            lost-badge
+        {% else %}
+            found-badge
+        {% endif %}">
+        {{ item['item_type'] }} Item
+    </span>
+
+    <h3>{{ item['item_name'] }}</h3>
+    <p><strong>Category:</strong> {{ item['category'] }}</p>
+    <p><strong>Location:</strong> {{ item['location'] }}</p>
+    <p><strong>Description:</strong> {{ item['description'] }}</p>
+    <p><strong>Contact:</strong> {{ item['contact'] }}</p>
+    <p><strong>Reported:</strong> {{ item['created_at'] }}</p>
+
+</div>
+{% endfor %}
+
+    {% else %}
+        <p>No reports yet. Be the first to report an item!</p>
+    {% endif %}
+</section>
+
+
+    <footer id="contact">
+        <p>Campus Lost Item Finder | College Mini Project</p>
+        <p>Built by a student to help the campus community.</p>
+    </footer>
+
+</body>
+</html>
